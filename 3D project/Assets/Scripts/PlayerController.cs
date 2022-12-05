@@ -6,12 +6,12 @@ public class PlayerController : MonoBehaviour
 {
 
     CharacterController characterController;
-
+    PlayerInputHandler playerInputHandler;
     public float velocidad_caminar=6.0f;
 
     public float velocidad_correr=10.0f;
 
-    public float velocidad_salto=8.0f;
+    public float velocidad_salto=18.0f;
  
    public float gravedad =70.0f;
 
@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     {
 
         characterController = GetComponent<CharacterController>();
-
+        playerInputHandler = GetComponent<PlayerInputHandler>();
     }
 
 
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
         if(characterController.isGrounded){
 
-            movimiento= new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+            movimiento= new Vector3(playerInputHandler.MoveInput.x, 0.0f, playerInputHandler.MoveInput.y);
 
             if(Input.GetKey(KeyCode.LeftShift)){
 
@@ -51,8 +51,8 @@ public class PlayerController : MonoBehaviour
 
             }
 
-            if(Input.GetKey(KeyCode.Space)){
-
+            if(playerInputHandler.Jump){
+                playerInputHandler.UseJumpInput();
                 movimiento.y = velocidad_salto;
 
             }
@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
         movimiento.y -= gravedad * Time.deltaTime;
 
         characterController.Move(movimiento*Time.deltaTime);
+        
 
     }
 }
