@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class PlayerController : MonoBehaviour
 {
 
@@ -16,12 +16,27 @@ public class PlayerController : MonoBehaviour
    public float gravedad =70.0f;
 
     private Vector3 movimiento = Vector3.zero;
+    public float lookSpeed;
+    // private Camera cameraRef = Camera.main;
+    // private Vector3 foward;
+    // private Vector3 right;
+
+    public TMP_Text text;
+
+    [SerializeField]private Transform modelRef;
+    [SerializeField]private Vector3 testVector = Vector3.zero;
+
+
+    float look;
+
+
 
     // Start is called before the first frame update
 
     void Start()
 
     {
+
 
         characterController = GetComponent<CharacterController>();
         playerInputHandler = GetComponent<PlayerInputHandler>();
@@ -35,10 +50,14 @@ public class PlayerController : MonoBehaviour
 
     {
 
+        text.text=@$"   
+                        MouseInput{this.playerInputHandler.MouseInput}
+                        NormMInputX{this.playerInputHandler.NormalizedMouseInputX}
+
+        ";
         if(characterController.isGrounded){
 
             movimiento= new Vector3(playerInputHandler.MoveInput.x, 0.0f, playerInputHandler.MoveInput.y);
-
             if(Input.GetKey(KeyCode.LeftShift)){
 
                 movimiento = transform.TransformDirection(movimiento)* velocidad_correr; 
@@ -64,7 +83,19 @@ public class PlayerController : MonoBehaviour
         movimiento.y -= gravedad * Time.deltaTime;
 
         characterController.Move(movimiento*Time.deltaTime);
-        
 
+        RotatePlayer();
+        
+        
+        
+        
+    }
+
+    void RotatePlayer(){
+        Vector3 rotation = Vector3.zero;
+        look += playerInputHandler.NormalizedMouseInputX*lookSpeed;
+        rotation.y= look;
+        Quaternion quaternion = Quaternion.Euler(rotation);
+        transform.rotation=quaternion;
     }
 }

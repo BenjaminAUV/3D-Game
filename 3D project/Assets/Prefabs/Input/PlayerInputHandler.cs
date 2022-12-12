@@ -10,7 +10,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool Jump{get; private set;}
 
     public Vector2 MouseInput{get; private set;}
-
+    public sbyte NormalizedMouseInputX{get; private set;}
+    public sbyte NormalizedMouseInputY{get; private set;}
     void Update(){
 
     }
@@ -29,9 +30,10 @@ public class PlayerInputHandler : MonoBehaviour
     public void UseJumpInput() => Jump = false;
 
     public void OnMouseInput(InputAction.CallbackContext context){
-        Debug.Log(context.ReadValue<Vector2>());
         if(context.performed || context.canceled){
             MouseInput=context.ReadValue<Vector2>();
+            NormalizedMouseInputX = (sbyte)(MouseInput*Vector2.right).normalized.x;
+            NormalizedMouseInputY = (sbyte)(MouseInput*Vector2.up).normalized.y;
         }
     }
 

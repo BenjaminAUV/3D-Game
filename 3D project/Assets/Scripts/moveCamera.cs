@@ -6,20 +6,20 @@ public class moveCamera : MonoBehaviour
 {
     public PlayerInputHandler playerInputHandler;
     
-    private float cameraLookSpeed = 1f;
-    private float cameraPivotSpeed = 1f;
+
 
     public Transform targetTransform;
     public Transform cameraPivot;
-    public Vector3 cameraFollowVelocity = Vector3.zero;
+    private Vector3 cameraFollowVelocity = Vector3.zero;
     public float cameraFollowSpeed= 0.2f;
 
-    public float positionX = 0f;
-    public float positionY = 2.5f;
-    public float positionZ = -2f;
+    [SerializeField]private float cameraLookSpeed = 1f;
+    private float cameraPivotSpeed = 1f;
+    [SerializeField]private Vector3 cameraPosition = Vector3.zero;
+    [SerializeField]private Vector3 cameraRotation = Vector3.zero;
 
-    public float lookAngle;
-    public float pivotAngle;
+    private float lookAngle;
+    private float pivotAngle;
 
     void Start(){
 
@@ -27,25 +27,24 @@ public class moveCamera : MonoBehaviour
 
     void Update(){
 
+        Cursor.lockState = CursorLockMode.Locked;
+        //transform.LookAt(targetTransform);
+        
     }
     void LateUpdate(){
-        
-        RotateCamera();
-        FollowTarget();
+
+        //transform.Translate((new Vector3(0f,playerInputHandler.NormalizedMouseInputY,0f)* Time.deltaTime)*cameraLookSpeed);
+
     }
-    public void FollowTarget(){
-        Vector3 targetTP = new Vector3(targetTransform.position.x+positionX,targetTransform.position.y+positionY,targetTransform.position.z+positionZ);
-        Vector3 targetP = Vector3.SmoothDamp(transform.position, targetTP,ref cameraFollowVelocity,cameraFollowSpeed);
-        transform.position =targetP;
-    }
+
 
     public void RotateCamera(){
-        lookAngle = lookAngle + (playerInputHandler.MouseInput.x * cameraLookSpeed);
+        lookAngle += (playerInputHandler.MouseInput.x * cameraLookSpeed);
         pivotAngle = pivotAngle + (playerInputHandler.MouseInput.y * cameraPivotSpeed);
-
+        //transform.Translate(new Vector3(lookAngle,0f,0f)*Time.deltaTime);
 
         Vector3 rotation = Vector3.zero;
-        rotation.x = 20f;
+        rotation.x = cameraRotation.x;
         rotation.y = lookAngle;
         Quaternion targetR = Quaternion.Euler(rotation);
         transform.rotation = targetR;
