@@ -5,6 +5,9 @@ using UnityEngine;
 public class GemEvents : MonoBehaviour
 {
     [SerializeField]private GameObject target;
+    [SerializeField]private PlayerController playerController;
+
+    [SerializeField]private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,8 @@ public class GemEvents : MonoBehaviour
         
     }
     public void DeActivate(){
+        audioSource.Play(0);
+        playerController.AddGem();
         target.SetActive(false);
     }
 }

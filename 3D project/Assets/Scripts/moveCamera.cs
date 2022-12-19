@@ -27,7 +27,7 @@ public class moveCamera : MonoBehaviour
 
     void Update(){
 
-        Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.lockState = CursorLockMode.Locked;
         //transform.LookAt(targetTransform);
         
     }

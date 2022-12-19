@@ -5,6 +5,8 @@ using TMPro;
 using System;
 public class PlayerController : MonoBehaviour
 {
+    private byte gems;
+
     [SerializeField]private Transform spwanPoint;
     private Vector3 spwanPointPos;
     public byte Health{get; private set;}
@@ -57,11 +59,9 @@ public class PlayerController : MonoBehaviour
 
     {
 
-        text.text=@$"   
-                        Health{this.Health}
-                        Lifes{this.Lifes}
-                        Position{this.transform.position}
-                        SpanwPoint{this.spwanPointPos}
+        text.text=@$"
+Lifes: {this.Lifes}
+Gems: {this.gems}
         ";
         if(characterController.enabled == true){
 
@@ -99,7 +99,10 @@ public class PlayerController : MonoBehaviour
         }
         
         
-        
+        if(gems==4){
+            PersistentData.gemsCollected= this.gems;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GameOverScene");
+        };
         
     }
 
@@ -119,7 +122,7 @@ public class PlayerController : MonoBehaviour
             Die();
         }else{}
     }
-    private void Die(){
+    public void Die(){
         
         if(Lifes>0){
             
@@ -128,6 +131,8 @@ public class PlayerController : MonoBehaviour
 
         }
         if(Lifes==0){
+            PersistentData.gemsCollected= this.gems;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GameOverScene");
             Debug.Log("GAME OVER");
         }
     }
@@ -150,5 +155,9 @@ public class PlayerController : MonoBehaviour
         spwanPointPos = newSpawnPoint;
     }
 
+    public void AddGem(){
+        this.Health = 100;
+        gems+=1;
+    }
 
 }
